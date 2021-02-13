@@ -5,6 +5,7 @@ ff02::2		ip6-allrouters
 
 127.0.1.1	rpi-001
 
+# IP addresses changed for security
 
 192.168.6.134	rpi-002.wbuckler.com
 192.168.6.135	cen-002.wbuckler.com
