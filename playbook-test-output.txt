@@ -1,0 +1,21 @@
+pi@rpi-001:~/a001 $ ansible-playbook playbook-test.yml
+
+PLAY [linux server test] ***********************************************************************************************************
+
+TASK [ensure screen is installed] **************************************************************************************************
+fatal: [cen-002.wbuckler.com]: UNREACHABLE! => {"changed": false, "msg": "Failed to connect to the host via ssh: ssh: connect to host cen-002.wbuckler.com port 22: No route to host", "unreachable": true}
+changed: [rpi-002.wbuckler.com]
+	to retry, use: --limit @/home/pi/a001/playbook-test.retry
+
+PLAY RECAP *************************************************************************************************************************
+cen-002.wbuckler.com       : ok=0    changed=0    unreachable=1    failed=0   
+rpi-002.wbuckler.com       : ok=1    changed=1    unreachable=0    failed=0   
+
+pi@rpi-001:~/a001 $ 
+pi@rpi-001:~/a001 $ # cen-002 not built yet
+
+
+pi@rpi-002:~ $ # Check screen is installed on rpi-002
+pi@rpi-002:~ $ 
+pi@rpi-002:~ $ screen -v
+Screen version 4.06.02 (GNU) 23-Oct-17
