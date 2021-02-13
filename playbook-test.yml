@@ -1,0 +1,12 @@
+---
+- name: linux server test
+  hosts: all-servers
+  become: true
+  gather_facts: false
+
+  tasks:
+    - name: ensure screen is installed
+      apt:
+        name: screen
+        state: present
+        update-cache: yes
