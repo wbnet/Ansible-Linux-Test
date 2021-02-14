@@ -1,12 +1,59 @@
 ---
-- name: linux server test
+# Using Ansible 2.7.7 on Raspberry Pi.
+# Comments start with a "#".
+# Using SSH keys to connect to Linux servers.
+
+- name: Linux server test
   hosts: all-servers
   become: true
-  gather_facts: false
+  gather_facts: true
 
   tasks:
-    - name: ensure screen is installed
+    - name: Ensure screen (application) is installed
       apt:
         name: screen
-        state: present
+        # state: absent
+        state: latest
+        # state: present
         update-cache: yes
+
+      # Testing conditional statements.
+      # Python "if" statement equivalent.
+
+      # Will replace contents of file free.txt
+      # only if OS family is Debian.
+
+    - name: Check RAM usage and write to disk
+      shell: /bin/free -m > /home/pi/free.txt
+      # when: ansible_facts['os_family'] == 'CentOS'
+      when: ansible_facts['os_family'] == 'Debian'
+
+      # Testing loops in Ansible.
+      # Will append each output to file echo.txt.
+
+    - name: Loop test
+      shell: /bin/echo {{ item }} >> /home/pi/echo.txt
+      # ansible.builtin.shell: "echo {{ item }}"
+      # Ansible 2.7 does not support syntax in comment above.
+      # Ansible 2.10 is latest version.
+      loop:
+        - "red"
+        - "green"
+        - "blue"
+      # register: echo
+
+    - name: Add command output to variable
+      # shell: /usr/bin/uptime
+      # shell: /bin/free -m
+      shell: /bin/vmstat -s | grep memory
+      register: result
+
+    - name: Show variable content
+      debug:
+        var: result
+        # verbosity: 2
+
+    - name: Show IPv4 default gateway
+      debug:
+        msg: "System {{ inventory_hostname }} has gateway {{ ansible_default_ipv4.gateway }}"
+      when: ansible_default_ipv4.gateway is defined
