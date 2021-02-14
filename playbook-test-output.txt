@@ -1,21 +1,55 @@
 pi@rpi-001:~/a001 $ ansible-playbook playbook-test.yml
 
-PLAY [linux server test] ***********************************************************************************************************
+PLAY [Linux server test] ***********************************************************************************************************
 
-TASK [ensure screen is installed] **************************************************************************************************
+TASK [Gathering Facts] *************************************************************************************************************
 fatal: [cen-002.wbuckler.com]: UNREACHABLE! => {"changed": false, "msg": "Failed to connect to the host via ssh: ssh: connect to host cen-002.wbuckler.com port 22: No route to host", "unreachable": true}
+ok: [rpi-002.wbuckler.com]
+
+TASK [Ensure screen (application) is installed] ************************************************************************************
 changed: [rpi-002.wbuckler.com]
+
+TASK [Check RAM usage and write to disk] *******************************************************************************************
+changed: [rpi-002.wbuckler.com]
+
+TASK [Loop test] *******************************************************************************************************************
+changed: [rpi-002.wbuckler.com] => (item=red)
+changed: [rpi-002.wbuckler.com] => (item=green)
+changed: [rpi-002.wbuckler.com] => (item=blue)
+
+TASK [Add command output to variable] **********************************************************************************************
+changed: [rpi-002.wbuckler.com]
+
+TASK [Show variable content] *******************************************************************************************************
+ok: [rpi-002.wbuckler.com] => {
+    "result": {
+        "changed": true,
+        "cmd": "/bin/vmstat -s | grep memory",
+        "delta": "0:00:00.082401",
+        "end": "2021-02-14 15:47:24.853819",
+        "failed": false,
+        "rc": 0,
+        "start": "2021-02-14 15:47:24.771418",
+        "stderr": "",
+        "stderr_lines": [],
+        "stdout": "       440448 K total memory\n        35312 K used memory\n       175972 K active memory\n        74300 K inactive memory\n       154088 K free memory\n        21652 K buffer memory",
+        "stdout_lines": [
+            "       440448 K total memory",
+            "        35312 K used memory",
+            "       175972 K active memory",
+            "        74300 K inactive memory",
+            "       154088 K free memory",
+            "        21652 K buffer memory"
+        ]
+    }
+}
+
+TASK [Show IPv4 default gateway] ***************************************************************************************************
+ok: [rpi-002.wbuckler.com] => {
+    "msg": "System rpi-002.wbuckler.com has gateway 192.168.6.1"
+}
 	to retry, use: --limit @/home/pi/a001/playbook-test.retry
 
 PLAY RECAP *************************************************************************************************************************
 cen-002.wbuckler.com       : ok=0    changed=0    unreachable=1    failed=0   
-rpi-002.wbuckler.com       : ok=1    changed=1    unreachable=0    failed=0   
-
-pi@rpi-001:~/a001 $ 
-pi@rpi-001:~/a001 $ # cen-002 not built yet
-
-
-pi@rpi-002:~ $ # Check screen is installed on rpi-002
-pi@rpi-002:~ $ 
-pi@rpi-002:~ $ screen -v
-Screen version 4.06.02 (GNU) 23-Oct-17
+rpi-002.wbuckler.com       : ok=7    changed=4    unreachable=0    failed=0   
